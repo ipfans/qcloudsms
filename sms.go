@@ -1,6 +1,12 @@
 package qcloudsms
 
 import (
+	"io"
+
+	"io/ioutil"
+
+	"encoding/json"
+
 	"github.com/pkg/errors"
 )
 
@@ -108,4 +114,36 @@ func (ss *SMS) MobileStatus(mobile string, start, end int64, exts ...SmsExt) (re
 	}
 	resp, err = ss.client.Post(req)
 	return
+}
+
+func (ss *SMS) ReadStatus(reader io.Reader) (status []QSMSStatus, err error) {
+	var b []byte
+	b, err = ioutil.ReadAll(reader)
+	if err != nil {
+		return
+	}
+	status, err = ss.ReadStatusByte(b)
+	return
+}
+
+func (ss *SMS) ReadStatusByte(body []byte) ([]QSMSStatus, error) {
+	var status = make([]QSMSStatus, 0)
+	err := json.Unmarshal(body, &status)
+	return status, err
+}
+
+func (ss *SMS) ReadReply(reader io.Reader) (status QSMSReply, err error) {
+	var b []byte
+	b, err = ioutil.ReadAll(reader)
+	if err != nil {
+		return
+	}
+	status, err = ss.ReadReplyByte(b)
+	return
+}
+
+func (ss *SMS) ReadReplyByte(body []byte) (QSMSReply, error) {
+	var status QSMSReply
+	err := json.Unmarshal(body, &status)
+	return status, err
 }

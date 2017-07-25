@@ -29,43 +29,24 @@ func (qr *QResponse) Desc() string {
 	return qr.ErrMsg
 }
 
-func (qr *QResponse) Status() (status []DeliveryStatus) {
+func (qr *QResponse) Status() (status []QSMSStatus) {
 	if qr.Data == nil {
 		return
 	}
-	status, ok := qr.Data.([]DeliveryStatus)
+	status, ok := qr.Data.([]QSMSStatus)
 	if !ok {
 		return
 	}
 	return
 }
 
-func (qr *QResponse) Reply() (status []ReplyStatus) {
+func (qr *QResponse) Reply() (status []QSMSReply) {
 	if qr.Data == nil {
 		return
 	}
-	status, ok := qr.Data.([]ReplyStatus)
+	status, ok := qr.Data.([]QSMSReply)
 	if !ok {
 		return
 	}
 	return
-}
-
-type DeliveryStatus struct {
-	UserReceiveTime string `json:"user_receive_time"`
-	NationCode      string `json:"nationcode"`
-	Mobile          string `json:"mobile"`
-	ReportStatus    string `json:"report_status"`
-	ErrMsg          string `json:"errmsg"`
-	Description     string `json:"description"`
-	Sid             string `json:"sid"`
-}
-
-type ReplyStatus struct {
-	NationCode string `json:"nationcode"`
-	Mobile     string `json:"mobile"`
-	Text       string `json:"text"`
-	Sign       string `json:"sign"`
-	Time       int    `json:"time"`
-	Extend     string `json:"extend"`
 }
