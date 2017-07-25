@@ -21,10 +21,10 @@ Pre-alpha. Lots of functionality is knowingly missing or broken. API may change 
 
 * [ ] SMS
   * [x] sendsms    发送短信
-  * [ ] sendmultisms2    发送多条短信
+  * [x] sendmultisms2    发送多条短信
   * [ ] smscallback    短信状态回调
   * [ ] smsreply    短信上行
   * [ ] pullstatus    拉取短信状态
-  * [ ] pullstatus4mobile    拉取单个手机短信状态
+  * [x] pullstatus4mobile    拉取单个手机短信状态
 
 * [ ] Improve test coverage
