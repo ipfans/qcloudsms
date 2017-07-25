@@ -1,6 +1,7 @@
 package qcloudsms
 
 import (
+	"net"
 	"net/http"
 	"testing"
 
@@ -28,14 +29,16 @@ func TestNewClient(t *testing.T) {
 
 func TestPost(t *testing.T) {
 	oldBaseUrl := baseURL
-	baseURL = "http://127.0.0.1:8180/"
-	srv := &http.Server{Addr: "127.0.0.1:8180"}
+	ln, _ := net.Listen("tcp4", "127.0.0.1:0")
+	l := ln.(*net.TCPListener)
+	srv := &http.Server{Addr: "127.0.0.1:8081"}
 	http.HandleFunc("/sendsms", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.Write([]byte(`{"result":0,"errmsg":"OK","ext":"","sid":"123123123","fee":1}`))
 	})
-	go srv.ListenAndServe()
+	go srv.Serve(l)
 	defer srv.Shutdown(nil)
+	baseURL = "http://" + l.Addr().String() + "/"
 	conf := NewClientConfig()
 	conf.AppID = "123"
 	conf.AppKey = "dffdfd6029698a5fdf4"
