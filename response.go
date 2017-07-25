@@ -40,6 +40,17 @@ func (qr *QResponse) Status() (status []DeliveryStatus) {
 	return
 }
 
+func (qr *QResponse) Reply() (status []ReplyStatus) {
+	if qr.Data == nil {
+		return
+	}
+	status, ok := qr.Data.([]ReplyStatus)
+	if !ok {
+		return
+	}
+	return
+}
+
 type DeliveryStatus struct {
 	UserReceiveTime string `json:"user_receive_time"`
 	NationCode      string `json:"nationcode"`
@@ -48,4 +59,13 @@ type DeliveryStatus struct {
 	ErrMsg          string `json:"errmsg"`
 	Description     string `json:"description"`
 	Sid             string `json:"sid"`
+}
+
+type ReplyStatus struct {
+	NationCode string `json:"nationcode"`
+	Mobile     string `json:"mobile"`
+	Text       string `json:"text"`
+	Sign       string `json:"sign"`
+	Time       int    `json:"time"`
+	Extend     string `json:"extend"`
 }

@@ -122,8 +122,52 @@ func TestMobileStatus(t *testing.T) {
 		t.Errorf("Send sms failed: %v", resp.Error())
 		return
 	}
+	if len(resp.Reply()) != 0 {
+		t.Errorf("Status parse failed: %v", resp.Error())
+		return
+	}
 	if len(resp.Status()) == 0 {
 		t.Errorf("Status parse failed: %v", resp.Error())
+		return
+	}
+	c = NewMockClient(mockCtrl)
+	r = &QResponse{
+		Result: 0,
+		ErrMsg: "OK",
+		Ext:    "",
+		Data: []ReplyStatus{
+			{
+				Time:       1500000000,
+				NationCode: "86",
+				Mobile:     "18600000000",
+				Sign:       "【你好科技】",
+				Text:       "HelloWorld",
+				Extend:     "",
+			},
+		},
+	}
+	c.EXPECT().Post(gomock.Any()).Return(r, nil)
+	sms, _ = SMSService(c)
+	resp, err = sms.MultiSend([]string{"18600000000", "15900000000"}, "Hello world")
+	if err != nil {
+		t.Errorf("Send request failed: %v", err)
+		return
+	}
+	if resp.Error() != ErrCodeOK {
+		t.Errorf("Send sms failed: %v", resp.Error())
+		return
+	}
+	if len(resp.Status()) != 0 {
+		t.Errorf("Reply parse failed: %v", resp.Error())
+		return
+	}
+	if len(resp.Reply()) == 0 {
+		t.Errorf("Reply parse failed: %v", resp.Error())
+		return
+	}
+	if resp.Reply()[0].Text != "HelloWorld" {
+		t.Errorf("Content want be %s, but it was %s",
+			"HelloWorld", resp.Reply()[0].Text)
 		return
 	}
 }
