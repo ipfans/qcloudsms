@@ -13,6 +13,9 @@ type QRequest struct {
 	EndTime    int64       `json:"end_time"`
 	NationCode string      `json:"nationcode"`
 	Mobile     string      `json:"mobile"`
+	PlayTimes  int         `json:"playtimes"`
+	PromptType int         `json:"prompttype,omitempty"`
+	PromptFile string      `json:"promptfile,omitempty"`
 
 	// Generation form client.
 	Sig  string `json:"sig"`

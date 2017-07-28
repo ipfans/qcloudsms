@@ -16,7 +16,7 @@ import (
 
 var (
 	userAgent   = "qcloudsms-go-sdk/1.0"
-	baseURL     = "https://yun.tim.qq.com/v5/tlssmssvr/"
+	baseURL     = "https://yun.tim.qq.com/v5"
 	contentType = "application/json; charset=utf-8"
 )
 

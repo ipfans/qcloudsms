@@ -32,18 +32,18 @@ func TestPost(t *testing.T) {
 	ln, _ := net.Listen("tcp4", "127.0.0.1:0")
 	l := ln.(*net.TCPListener)
 	srv := &http.Server{Addr: "127.0.0.1:8081"}
-	http.HandleFunc("/sendsms", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/v5/tlsvoicesvr/sendsms", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.Write([]byte(`{"result":0,"errmsg":"OK","ext":"","sid":"123123123","fee":1}`))
 	})
 	go srv.Serve(l)
 	defer srv.Shutdown(nil)
-	baseURL = "http://" + l.Addr().String() + "/"
+	baseURL = "http://" + l.Addr().String() + "/v5"
 	conf := NewClientConfig()
 	conf.AppID = "123"
 	conf.AppKey = "dffdfd6029698a5fdf4"
 	client, _ := NewClient(conf)
-	sms, err := SMSService(client)
+	sms, err := MessageService(client)
 	if err != nil {
 		t.Errorf("Sms init failed: %v", err)
 		return

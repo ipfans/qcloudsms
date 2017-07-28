@@ -18,7 +18,7 @@ func ExampleSend() {
 	if err != nil {
 		return
 	}
-	sms, err := SMSService(client)
+	sms, err := MessageService(client)
 	if err != nil {
 		return
 	}
@@ -38,7 +38,7 @@ func TestSend(t *testing.T) {
 	r.Sid = "xxxx"
 	r.Fee = 1
 	c.EXPECT().Post(gomock.Any()).Return(r, nil)
-	sms, _ := SMSService(c)
+	sms, _ := MessageService(c)
 	resp, err := sms.Send("18600000000", "Hello world")
 	if err != nil {
 		t.Errorf("Send request failed: %v", err)
@@ -82,7 +82,7 @@ func TestMultiSend(t *testing.T) {
 		},
 	}
 	c.EXPECT().Post(gomock.Any()).Return(r, nil)
-	sms, _ := SMSService(c)
+	sms, _ := MessageService(c)
 	resp, err := sms.MultiSend([]string{"18600000000", "15900000000"}, "Hello world")
 	if err != nil {
 		t.Errorf("Send request failed: %v", err)
@@ -115,7 +115,7 @@ func TestMobileStatus(t *testing.T) {
 		},
 	}
 	c.EXPECT().Post(gomock.Any()).Return(r, nil)
-	sms, _ := SMSService(c)
+	sms, _ := MessageService(c)
 	resp, err := sms.MobileStatus("18600000000", 0, 1500000000)
 	if err != nil {
 		t.Errorf("Send request failed: %v", err)
@@ -150,7 +150,7 @@ func TestMobileStatus(t *testing.T) {
 		},
 	}
 	c.EXPECT().Post(gomock.Any()).Return(r, nil)
-	sms, _ = SMSService(c)
+	sms, _ = MessageService(c)
 	resp, err = sms.MobileStatus("18600000000", 0, 1500000000)
 	if err != nil {
 		t.Errorf("Send request failed: %v", err)

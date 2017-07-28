@@ -1,11 +1,9 @@
 package qcloudsms
 
 import (
-	"io"
-
-	"io/ioutil"
-
 	"encoding/json"
+	"io"
+	"io/ioutil"
 
 	"github.com/pkg/errors"
 )
@@ -23,7 +21,7 @@ type SMS struct {
 
 var defaultExt = SmsExt{Max: 10}
 
-func SMSService(client Client) (*SMS, error) {
+func MessageService(client Client) (*SMS, error) {
 	if client == nil {
 		return nil, errors.New("client not init")
 	}
@@ -47,7 +45,7 @@ func (ss *SMS) Send(phone, content string, exts ...SmsExt) (resp *QResponse, err
 		ext = defaultExt
 	}
 	req := &QRequest{
-		Path:   "sendsms",
+		Path:   "/tlssmssvr/sendsms",
 		Type:   ext.Type,
 		Msg:    content,
 		Extend: ext.Extend,
@@ -74,7 +72,7 @@ func (ss *SMS) MultiSend(phones []string, content string, exts ...SmsExt) (resp 
 		return
 	}
 	req := &QRequest{
-		Path:   "sendmultisms2",
+		Path:   "/tlssmssvr/sendmultisms2",
 		Type:   ext.Type,
 		Msg:    content,
 		Extend: ext.Extend,
@@ -104,7 +102,7 @@ func (ss *SMS) MobileStatus(mobile string, start, end int64, exts ...SmsExt) (re
 		ext.Max = 100
 	}
 	req := &QRequest{
-		Path:       "pullstatus4mobile",
+		Path:       "/tlssmssvr/pullstatus4mobile",
 		Type:       ext.Type,
 		Max:        ext.Max,
 		BeginTime:  start,

@@ -14,6 +14,7 @@ type QResponse struct {
 	Result int    `json:"result"`
 	ErrMsg string `json:"errmsg"`
 	Sid    string `json:"sid"`
+	CallID string `json:"callid"`
 	Fee    int    `json:"fee"`
 	Ext    string `json:"ext"`
 
